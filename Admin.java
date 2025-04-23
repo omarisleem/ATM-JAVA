@@ -1,3 +1,4 @@
+import com.sun.source.tree.Tree;
 import java.util.*;
 import java.io.*;
 
@@ -5,7 +6,7 @@ import java.io.*;
 
 class Admin {
 
-    static final String adminPass = "23100674";
+    static final String adminPass = "231000674";
 
 
     public boolean Admicheck(String enterdpass) {
@@ -39,6 +40,7 @@ class Admin {
             try {
                 File file = new File("Accounts.txt");
                 Scanner sc = new Scanner(file);
+                boolean found = false;
 
                 while(sc.hasNextLine()) {
                     String line = sc.nextLine();
@@ -48,11 +50,17 @@ class Admin {
                         System.out.println("User Name: " + parts[1]);
                         System.out.println("PIN: " + parts[2]);
                         System.out.println("Balance: " + parts[3]);
+                        found = true;
                         break;
                     }
+                    
                 }
                 sc.close();
-                System.out.println("Account not found ):");
+
+                if(!found){
+                    System.out.println("Account not found ):");
+                }
+                
                 
             } catch (IOException e) {
                 System.out.println("Error while reading the file ):");
@@ -88,10 +96,10 @@ class Admin {
                 writer.close();
 
                 if(found){
-
-                    tempFile.renameTo(Mainfile);
+                    
                     Mainfile.delete();
-                    System.out.println("Account deleted successfully ^_^.");
+                    tempFile.renameTo(Mainfile);
+                    
                 }
                 else{
                     System.out.println("Account not found ):");
@@ -141,22 +149,27 @@ class Admin {
                     String Line = sc.nextLine();
                     String[] parts = Line.split(",");
                     if(parts[0].equals(accountNumber)){
-                        String newinfo = accountNumber + "," + newUserName + "," + parts[3];
-                        writer.write(newinfo);
+
+                    String updatedName = newUserName.isEmpty() ? parts[1] : newUserName;
+                    String updatedPin = newPIN.isEmpty() ? parts[2] : newPIN;
+                    String updatedBalance = parts[3];
+                        String newinfo = accountNumber + "," + updatedName + "," + updatedPin + "," + updatedBalance;
+                        writer.write(newinfo + "\n");
                         found = true;
                     }
                     else{
                         writer.write(Line + "\n");
                     }
                 }
-                
+
                     sc.close();
                     writer.close();
 
                     if(found){ 
-                    tempFile.renameTo(Mainfile);
                     Mainfile.delete();
-                    System.out.println("Account deleted successfully ^_^.");
+                    tempFile.renameTo(Mainfile);
+                    
+                    System.out.println("Account Updated successfully ^_^.");
                 }
                 else{
                     System.out.println("Account not found ):");
@@ -169,6 +182,26 @@ class Admin {
 
 
             }
+
+    }
+
+
+    public void deleteAll(){
+
+        
+
+        try {
+            FileWriter delete = new FileWriter("Accounts.txt");
+            delete.write("");
+            delete.close();
+
+            System.out.println("ALL data have been removed ^_^");
+            
+        } catch (IOException e) {
+            System.out.println("error in the file");
+        }
+
+
 
     }
 

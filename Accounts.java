@@ -27,7 +27,7 @@ public class Accounts {
 
 
     public String toString() {
-        return accountNumber + " ," + UserName + " ," + PIN + " ," + balance;
+        return accountNumber + "," + UserName + "," + PIN + "," + balance;
     }
 
    
