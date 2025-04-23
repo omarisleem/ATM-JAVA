@@ -88,8 +88,9 @@ class Admin {
                 writer.close();
 
                 if(found){
-                    Mainfile.delete();
+
                     tempFile.renameTo(Mainfile);
+                    Mainfile.delete();
                     System.out.println("Account deleted successfully ^_^.");
                 }
                 else{
@@ -98,7 +99,7 @@ class Admin {
             
 
             } catch (IOException e) {
-                System.out.println("Error while reading the file ):");
+                System.out.println("Error in the file ):");
             }
         }
 
@@ -116,6 +117,7 @@ class Admin {
                     System.out.println("User Name: " + parts[1]);
                     System.out.println("PIN: " + parts[2]);
                     System.out.println("Balance: " + parts[3]);
+                    System.out.println("\n");
                    
                     }
                 
@@ -125,6 +127,54 @@ class Admin {
                 System.out.println("Error while reading the file ):");
             }
         }
+
+    public void updateAccount(String accountNumber, String newUserName, String newPIN) {
+
+            File Mainfile = new File("Accounts.txt");
+            File tempFile = new File("tempAccounts.txt");
+
+            try {
+                Scanner sc = new Scanner(Mainfile);
+                FileWriter writer = new FileWriter(tempFile, true);
+                boolean found = false;
+                while(sc.hasNextLine()){
+                    String Line = sc.nextLine();
+                    String[] parts = Line.split(",");
+                    if(parts[0].equals(accountNumber)){
+                        String newinfo = accountNumber + "," + newUserName + "," + parts[3];
+                        writer.write(newinfo);
+                        found = true;
+                    }
+                    else{
+                        writer.write(Line + "\n");
+                    }
+                }
+                
+                    sc.close();
+                    writer.close();
+
+                    if(found){ 
+                    tempFile.renameTo(Mainfile);
+                    Mainfile.delete();
+                    System.out.println("Account deleted successfully ^_^.");
+                }
+                else{
+                    System.out.println("Account not found ):");
+                }
+
+
+                
+            } catch (IOException e) {
+                System.out.println("Error in the file ):");
+
+
+            }
+
+    }
+
+
+
+
 
 
 
