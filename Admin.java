@@ -5,23 +5,19 @@ import java.io.*;
 
 class Admin {
 
-    String adminPass;
+    static final String adminPass = "23100674";
 
-    public Admin(String adminPass) {
-        this.adminPass = adminPass;
-    }
 
     public boolean Admicheck(String enterdpass) {
-        if(enterdpass.equals(this.adminPass)) {
+        if(enterdpass.equals(adminPass)) {
             return true;
         } else {
             return false;
         }
     }
 
-    public void addAcc(String adminPass,String UserName, String accountNumber, String PIN, double balance) {
-        
-        if(Admicheck(adminPass)) {        
+    public void addAcc(String UserName, String accountNumber, String PIN, double balance) {
+
             
             Accounts acc = new Accounts(UserName, accountNumber, PIN, balance);
         try {
@@ -33,12 +29,12 @@ class Admin {
             System.out.println("Error writing to file.");
         }
 
-        }
+        
 
     }
 
-    public void viewAccount(String adminPass, String accountNumber) {
-        if(Admicheck(adminPass)) {
+    public void viewAccount(String accountNumber) {
+   
             ;
             try {
                 File file = new File("Accounts.txt");
@@ -57,21 +53,14 @@ class Admin {
                 }
                 sc.close();
                 System.out.println("Account not found ):");
-
-
-
                 
             } catch (IOException e) {
                 System.out.println("Error while reading the file ):");
             }
         }
-        else {
-            System.out.println("you are NOT an ADMIN -_-.");
-        }
-    }
+    
 
-    public void deleteAccount(String adminPass, String accountNumber ){
-        if(Admicheck(adminPass)) {
+    public void deleteAccount(String accountNumber){
 
             File Mainfile = new File("Accounts.txt");
             File tempFile = new File("tempAccounts.txt");
@@ -112,15 +101,9 @@ class Admin {
                 System.out.println("Error while reading the file ):");
             }
         }
-        else {
-            System.out.println("you are NOT an ADMIN -_-.");
-        }
-
-    }
 
 
-    public void viewAccountS(String adminPass) {
-        if(Admicheck(adminPass)) {
+        public void viewAccountS() { 
             
             try {
                 File file = new File("Accounts.txt");
@@ -142,24 +125,15 @@ class Admin {
                 System.out.println("Error while reading the file ):");
             }
         }
-        else {
-            System.out.println("you are NOT an ADMIN -_-.");
-        }
-    }
-
-    public void updateAccount(){
-
-    }
-
-
-
-
-
-
 
 
 
 }
+
+
+
+
+
     
     
     
