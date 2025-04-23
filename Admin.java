@@ -5,23 +5,19 @@ import java.io.*;
 
 class Admin {
 
-    String adminPass;
+    static final String adminPass = "231000674";
 
-    public Admin(String adminPass) {
-        this.adminPass = adminPass;
-    }
 
     public boolean Admicheck(String enterdpass) {
-        if(enterdpass.equals(this.adminPass)) {
+        if(enterdpass.equals(adminPass)) {
             return true;
         } else {
             return false;
         }
     }
 
-    public void addAcc(String adminPass,String UserName, String accountNumber, String PIN, double balance) {
-        
-        if(Admicheck(adminPass)) {        
+    public void addAcc(String UserName, String accountNumber, String PIN, double balance) {
+
             
             Accounts acc = new Accounts(UserName, accountNumber, PIN, balance);
         try {
@@ -33,16 +29,17 @@ class Admin {
             System.out.println("Error writing to file.");
         }
 
-        }
+        
 
     }
 
-    public void viewAccount(String adminPass, String accountNumber) {
-        if(Admicheck(adminPass)) {
+    public void viewAccount(String accountNumber) {
+   
             ;
             try {
                 File file = new File("Accounts.txt");
                 Scanner sc = new Scanner(file);
+                boolean found = false;
 
                 while(sc.hasNextLine()) {
                     String line = sc.nextLine();
@@ -52,26 +49,25 @@ class Admin {
                         System.out.println("User Name: " + parts[1]);
                         System.out.println("PIN: " + parts[2]);
                         System.out.println("Balance: " + parts[3]);
+                        found = true;
                         break;
                     }
+                    
                 }
                 sc.close();
-                System.out.println("Account not found ):");
 
-
-
+                if(!found){
+                    System.out.println("Account not found ):");
+                }
+                
                 
             } catch (IOException e) {
                 System.out.println("Error while reading the file ):");
             }
         }
-        else {
-            System.out.println("you are NOT an ADMIN -_-.");
-        }
-    }
+    
 
-    public void deleteAccount(String adminPass, String accountNumber ){
-        if(Admicheck(adminPass)) {
+    public void deleteAccount(String accountNumber){
 
             File Mainfile = new File("Accounts.txt");
             File tempFile = new File("tempAccounts.txt");
@@ -99,9 +95,10 @@ class Admin {
                 writer.close();
 
                 if(found){
+                    
                     Mainfile.delete();
                     tempFile.renameTo(Mainfile);
-                    System.out.println("Account deleted successfully ^_^.");
+                    
                 }
                 else{
                     System.out.println("Account not found ):");
@@ -109,18 +106,12 @@ class Admin {
             
 
             } catch (IOException e) {
-                System.out.println("Error while reading the file ):");
+                System.out.println("Error in the file ):");
             }
         }
-        else {
-            System.out.println("you are NOT an ADMIN -_-.");
-        }
-
-    }
 
 
-    public void viewAccountS(String adminPass) {
-        if(Admicheck(adminPass)) {
+        public void viewAccountS() { 
             
             try {
                 File file = new File("Accounts.txt");
@@ -133,6 +124,7 @@ class Admin {
                     System.out.println("User Name: " + parts[1]);
                     System.out.println("PIN: " + parts[2]);
                     System.out.println("Balance: " + parts[3]);
+                    System.out.println("\n");
                    
                     }
                 
@@ -142,16 +134,75 @@ class Admin {
                 System.out.println("Error while reading the file ):");
             }
         }
-        else {
-            System.out.println("you are NOT an ADMIN -_-.");
+
+    public void updateAccount(String accountNumber, String newUserName, String newPIN) {
+
+            File Mainfile = new File("Accounts.txt");
+            File tempFile = new File("tempAccounts.txt");
+
+            try {
+                Scanner sc = new Scanner(Mainfile);
+                FileWriter writer = new FileWriter(tempFile, true);
+                boolean found = false;
+                while(sc.hasNextLine()){
+                    String Line = sc.nextLine();
+                    String[] parts = Line.split(",");
+                    if(parts[0].equals(accountNumber)){
+
+                    String updatedName = newUserName.isEmpty() ? parts[1] : newUserName;
+                    String updatedPin = newPIN.isEmpty() ? parts[2] : newPIN;
+                    String updatedBalance = parts[3];
+                        String newinfo = accountNumber + "," + updatedName + "," + updatedPin + "," + updatedBalance;
+                        writer.write(newinfo + "\n");
+                        found = true;
+                    }
+                    else{
+                        writer.write(Line + "\n");
+                    }
+                }
+
+                    sc.close();
+                    writer.close();
+
+                    if(found){ 
+                    Mainfile.delete();
+                    tempFile.renameTo(Mainfile);
+                    
+                    System.out.println("Account Updated successfully ^_^.");
+                }
+                else{
+                    System.out.println("Account not found ):");
+                }
+
+
+                
+            } catch (IOException e) {
+                System.out.println("Error in the file ):");
+
+
+            }
+
+    }
+
+
+    public void deleteAll(){
+
+        
+
+        try {
+            FileWriter delete = new FileWriter("Accounts.txt");
+            delete.write("");
+            delete.close();
+
+            System.out.println("ALL data have been removed ^_^");
+            
+        } catch (IOException e) {
+            System.out.println("error in the file");
         }
+
+
+
     }
-
-    public void updateAccount(){
-
-    }
-
-
 
 
 
@@ -160,6 +211,11 @@ class Admin {
 
 
 }
+
+
+
+
+
     
     
     
