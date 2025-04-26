@@ -45,7 +45,7 @@ public class UserUI{
 
             case "3":
                 System.out.println("Account details: ");
-                user.viewAccount(accNumber);
+                user.viewAccount(accNumber , pin);
 
                 break;
 

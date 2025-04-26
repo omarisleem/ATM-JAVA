@@ -117,7 +117,7 @@ class Users {
     }
 
 
-    public void viewAccount(String accountNumber) {
+    public void viewAccount(String accountNumber,String pin) {
    
             
         try {
@@ -128,7 +128,7 @@ class Users {
             while(sc.hasNextLine()) {
                 String line = sc.nextLine();
                 String[] parts = line.split(",");
-                if (parts[0].equals(accountNumber)) {
+                if (parts[0].equals(accNumber) && parts[2].equals(PIN)) {
                 System.out.println("Account Number: " + parts[0]);
                 System.out.println("User Name: " + parts[1]);
                 System.out.println("PIN: " + parts[2]);

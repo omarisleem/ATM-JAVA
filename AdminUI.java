@@ -39,13 +39,11 @@ public class AdminUI{
                 case "1":
                     System.out.print("Enter User Name: ");
                     String name = input.nextLine();
-                    System.out.print("Enter Account Number: ");
-                    String accNum = input.nextLine();
                     System.out.print("Enter PIN: ");
                     String pin = input.nextLine();
                     System.out.print("Enter Balance: ");
                     double balance = Double.parseDouble(input.nextLine());
-                    admin.addAcc(name, accNum, pin, balance);
+                    admin.addAcc(name,pin, balance);
                     break;
 
                 case "2":

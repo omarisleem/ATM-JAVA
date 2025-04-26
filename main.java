@@ -4,7 +4,13 @@ import java.io.*;
 
 
 public class main{
+
     public static void main(String[] args) {
+    
+    Accounts.getACC_count();   
+
+
+
     Scanner input = new Scanner(System.in);
 
     boolean ATMrun = true;
