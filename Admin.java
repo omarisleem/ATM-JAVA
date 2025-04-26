@@ -16,10 +16,10 @@ class Admin {
         }
     }
 
-    public void addAcc(String UserName, String accountNumber, String PIN, double balance) {
+    public void addAcc(String UserName, String PIN, double balance) {
 
             
-            Accounts acc = new Accounts(UserName, accountNumber, PIN, balance);
+            Accounts acc = new Accounts(UserName, PIN, balance);
         try {
             FileWriter writer = new FileWriter("Accounts.txt", true);
             writer.write(acc.toString() + "\n");
