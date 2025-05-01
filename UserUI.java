@@ -34,19 +34,19 @@ public class UserUI{
             case "1":
                 System.out.print("Enter amount to deposit: ");
                 double depositAmount = Double.parseDouble(input.nextLine());
-                user.deposit(accNumber, depositAmount);
+                user.deposit(depositAmount);
                 break;
 
             case "2":
                 System.out.print("Enter amount to Withdraw: ");
                 double withammount = Double.parseDouble(input.nextLine());
-                user.withdraw(accNumber, withammount);
+                user.withdraw(withammount);
                 break;
 
             case "3":
                 System.out.println("Account details: ");
-                user.viewAccount(accNumber , pin);
-
+                user.viewAccount();
+                user.cleanupTempFile();
                 break;
 
              case "0":

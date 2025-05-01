@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+import javax.sound.sampled.Line;
 
 class Users {
     String accNumber;
@@ -10,10 +11,18 @@ class Users {
         this.PIN = PIN;
     }
 
+    public void cleanupTempFile() {
+    File tempFile = new File("tempAccounts.txt");
     
+    if (tempFile.exists()) {
+        if (!tempFile.delete()) {
+            tempFile.deleteOnExit();
+        }
+    }
+}
 
 
-    public void deposit(String accNumber, double DPammount){
+    public void deposit(double DPammount){
 
         File Mainfile = new File("Accounts.txt");
         File tempFile = new File("tempAccounts.txt");
@@ -21,7 +30,7 @@ class Users {
 
         try {
             Scanner sc = new Scanner(Mainfile);
-            FileWriter writer = new FileWriter(tempFile, true);
+            FileWriter writer = new FileWriter(tempFile);
 
             while(sc.hasNextLine()){
                 String line = sc.nextLine();
@@ -32,9 +41,10 @@ class Users {
                 double newBalance = currentBalance + DPammount;
 
                 String newLine = parts[0] + "," + parts[1] + "," + parts[2] + ","+ newBalance;
+                found = true;
 
                 writer.write(newLine + "\n");
-                found = true;
+                
             }else{
                 writer.write(line + "\n");
 
@@ -62,62 +72,76 @@ class Users {
 
 
 
-  public void withdraw(String accNumber, double wthAmmount){
+    public void withdraw(double withammount){
 
-            File Mainfile = new File("Accounts.txt");
-            File tempFile = new File("tempAccounts.txt");
-            boolean found = false;
+        File Mainfile = new File("Accounts.txt");
+        File tempFile = new File("tempAccounts.txt");
+        boolean found = false;
+        boolean enough = false;
 
-            try {
-                Scanner sc = new Scanner(Mainfile);
-                FileWriter writer = new FileWriter(tempFile, true);
+        try {
+            Scanner sc = new Scanner(Mainfile);
+            FileWriter writer = new FileWriter(tempFile);
 
-                while(sc.hasNextLine()){
-                    String line = sc.nextLine();
-                    String[] parts = line.split(",");
-                if (parts[0].equals(accNumber) && parts[2].equals(PIN)) {
-                    
-                    double currentBalance = Double.parseDouble(parts[3]);
+            while(sc.hasNextLine()){
+                String line = sc.nextLine();
+                String[] parts = line.split(",");
 
-                    if (wthAmmount > currentBalance){
-                        System.out.println("not enough money -_-");
-                        writer.write(line + "\n");
-                        continue;
-                    }
-                    
-                    double newBalance = currentBalance - wthAmmount;
+            if (parts[0].equals(accNumber) && parts[2].equals(PIN)) {
+                found = true;
+                double currentBalance = Double.parseDouble(parts[3]);
 
-                    String newLine = parts[0] + "," + parts[1] + "," + parts[2] + ","+ newBalance;
+                if (currentBalance >= withammount){                
+                double newBalance = currentBalance - withammount;
+                String newLine = parts[0] + "," + parts[1] + "," + parts[2] + ","+ newBalance;
+                
+                enough = true;
+                writer.write(newLine + "\n");
 
-                    writer.write(newLine + "\n");
-                    found = true;
                 }else{
+                    System.out.println("Not enough money -_-");
                     writer.write(line + "\n");
+                }
 
-                }
-                }
-                sc.close();
-                writer.close();
                 
+            }else{
+                writer.write(line + "\n");
 
-                if(found){ 
-                    Mainfile.delete();
-                    tempFile.renameTo(Mainfile);
-                    
-                    System.out.println("money has been withdrawn ^_^.");
-                }
-                else{
-                    System.out.println("Account not found or incorrect info ):");
-                }
-                
-            } catch (IOException e) {
-                System.out.println("Error in the file");
             }
+            }
+            sc.close();
+            writer.close();
+                
+
+        if (found) {
+            if (enough) {
+                Mainfile.delete();
+                tempFile.renameTo(Mainfile);
+                System.out.println("Money has been withdrawn successfully ^_^");
+            } else {
+                tempFile.delete(); 
+            }
+        } else {
+            System.out.println("Account not found or incorrect info ):");
+            tempFile.delete(); 
+        }
+    } catch (IOException e) {
+        System.out.println("Error processing file");
+        if (tempFile.exists()) {
+            tempFile.delete(); 
+        }
+    }
+
+    cleanupTempFile();  
+
 
     }
 
 
-    public void viewAccount(String accountNumber,String pin) {
+
+
+
+    public void viewAccount() {
    
             
         try {
