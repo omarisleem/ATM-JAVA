@@ -13,7 +13,7 @@ class Users {
     
 
 
-    public void deposit(String accNumber, double DPammount){
+    public void deposit(double DPammount){
 
         File Mainfile = new File("Accounts.txt");
         File tempFile = new File("tempAccounts.txt");
@@ -21,7 +21,7 @@ class Users {
 
         try {
             Scanner sc = new Scanner(Mainfile);
-            FileWriter writer = new FileWriter(tempFile, true);
+            FileWriter writer = new FileWriter(tempFile);
 
             while(sc.hasNextLine()){
                 String line = sc.nextLine();
@@ -32,9 +32,10 @@ class Users {
                 double newBalance = currentBalance + DPammount;
 
                 String newLine = parts[0] + "," + parts[1] + "," + parts[2] + ","+ newBalance;
+                found = true;
 
                 writer.write(newLine + "\n");
-                found = true;
+                
             }else{
                 writer.write(line + "\n");
 
@@ -62,53 +63,60 @@ class Users {
 
 
 
-  public void withdraw(String accNumber, double wthAmmount){
+  public void withdraw(double wthAmmount){
 
-            File Mainfile = new File("Accounts.txt");
-            File tempFile = new File("tempAccounts.txt");
-            boolean found = false;
+        File Mainfile = new File("Accounts.txt");
+        File tempFile = new File("tempAccounts.txt");
+        boolean found = false;
+        boolean withSucces = false;
 
-            try {
-                Scanner sc = new Scanner(Mainfile);
-                FileWriter writer = new FileWriter(tempFile, true);
+        try {
+            Scanner sc = new Scanner(Mainfile);
+            FileWriter writer = new FileWriter(tempFile);
 
-                while(sc.hasNextLine()){
-                    String line = sc.nextLine();
-                    String[] parts = line.split(",");
-                if (parts[0].equals(accNumber) && parts[2].equals(PIN)) {
-                    
-                    double currentBalance = Double.parseDouble(parts[3]);
+            while(sc.hasNextLine()){
+                String line = sc.nextLine();
+                String[] parts = line.split(",");
 
-                    if (wthAmmount > currentBalance){
-                        System.out.println("not enough money -_-");
-                        writer.write(line + "\n");
-                        continue;
-                    }
-                    
+            
+            if (parts[0].equals(accNumber) && parts[2].equals(PIN)) {
+
+                found = true;
+                double currentBalance = Double.parseDouble(parts[3]);
+
+                if (wthAmmount > currentBalance){
+                    System.out.println("not enough money -_-");
+                    writer.write(line + "\n");
+    
+                }else{     
+
                     double newBalance = currentBalance - wthAmmount;
 
                     String newLine = parts[0] + "," + parts[1] + "," + parts[2] + ","+ newBalance;
 
                     writer.write(newLine + "\n");
-                    found = true;
+                    withSucces = true; 
+
+                }
+
                 }else{
                     writer.write(line + "\n");
 
                 }
                 }
+
                 sc.close();
                 writer.close();
-                
 
-                if(found){ 
+                if (withSucces){
                     Mainfile.delete();
                     tempFile.renameTo(Mainfile);
-                    
                     System.out.println("money has been withdrawn ^_^.");
+
+                }else if(!found){
+                   System.out.println("Account not found or incorrect info ):");
                 }
-                else{
-                    System.out.println("Account not found or incorrect info ):");
-                }
+            
                 
             } catch (IOException e) {
                 System.out.println("Error in the file");
@@ -117,7 +125,7 @@ class Users {
     }
 
 
-    public void viewAccount(String accountNumber,String pin) {
+    public void viewAccount() {
    
             
         try {

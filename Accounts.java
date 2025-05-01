@@ -66,7 +66,7 @@ public class Accounts {
             writer.write(String.valueOf(accountCount));
             writer.close();
             
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Error in the file");
 
         }

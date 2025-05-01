@@ -75,7 +75,7 @@ class Admin {
 
             try {
                 Scanner sc = new Scanner(Mainfile);
-                FileWriter writer = new FileWriter(tempFile, true);
+                FileWriter writer = new FileWriter(tempFile);
                 boolean found = false;
                 while(sc.hasNextLine()){
                     String Line = sc.nextLine();
@@ -142,7 +142,7 @@ class Admin {
 
             try {
                 Scanner sc = new Scanner(Mainfile);
-                FileWriter writer = new FileWriter(tempFile, true);
+                FileWriter writer = new FileWriter(tempFile);
                 boolean found = false;
                 while(sc.hasNextLine()){
                     String Line = sc.nextLine();
