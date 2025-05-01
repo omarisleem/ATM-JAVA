@@ -46,7 +46,7 @@ public class UserUI{
             case "3":
                 System.out.println("Account details: ");
                 user.viewAccount();
-
+                user.cleanupTempFile();
                 break;
 
              case "0":
